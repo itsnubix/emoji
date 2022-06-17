@@ -75,7 +75,7 @@ class Emoji
      * @param  string  $haystack
      * @return string
      */
-    public static function replace(string $haystack): string
+    public static function parse(string $haystack): string
     {
         return preg_replace_callback(
             '/:[\s\S]*?:/i',

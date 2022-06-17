@@ -43,13 +43,13 @@ it('replaces :emoji_names: in a string with their unicode values', function () {
         "Lorem :$1: ipsum :$2: dolor :$3: sit :$4: amet",
     );
 
-    expect(Emoji::replace($string))->not->toBe($string);
+    expect(Emoji::parse($string))->not->toBe($string);
 });
 
 it('does not replace invalid :emoji_names: if there is no valid match', function () {
     $string = 'This string will contain :invalid_emojis: which will not be replaced.';
 
-    expect(Emoji::replace($string))->toBe($string);
+    expect(Emoji::parse($string))->toBe($string);
 });
 
 it('can convert camel case requests for a method and match with the snake case version', function () {
