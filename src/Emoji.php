@@ -24,7 +24,7 @@ class Emoji
      */
     public static function __callStatic($method, $arguments)
     {
-        return call_user_func(static::class.'::get', $method, ...$arguments);
+        return call_user_func(static::class.'::get', static::normalizeEmojiName($method), ...$arguments);
     }
 
     /**
@@ -40,12 +40,12 @@ class Emoji
     /**
      * Set the global skin tone.
      *
-     * @param  \Emoji\Enums\SkinTone  $skinTone
+     * @param  null|string|callable|\Emoji\Enum\SkinTone  $skinTone
      * @return void
      */
-    public static function setDefaultSkinTone(SkinTone $skinTone): void
+    public static function setDefaultSkinTone($skinTone): void
     {
-        static::$skinTone = $skinTone;
+        static::$skinTone = SkinTone::resolve($skinTone);
     }
 
     /**
@@ -54,17 +54,17 @@ class Emoji
      * skin tone if required.
      *
      * @param  string  $key
-     * @param  null|SkinTone  $skinTone
+     * @param  null|string|callable|SkinTone  $skinTone
      * @return null|\Emoji\Factory
      */
-    public static function get(string $name, ?SkinTone $skinTone = null): ?Factory
+    public static function get(string $name, $skinTone = null): ?Factory
     {
         // check if emoji exists
         if (! $emoji = Character::tryFromName($name)) {
             return null;
         }
 
-        return new Factory($emoji, $skinTone ?? static::$skinTone);
+        return new Factory($emoji, SkinTone::tryToResolve($skinTone) ?? static::getDefaultSkinTone());
     }
 
     /**
@@ -82,5 +82,25 @@ class Emoji
             fn ($matches) => static::get(trim($matches[0], ':'))?->toString() ?? $matches[0],
             $haystack
         );
+    }
+
+    /**
+     * Normalize the name of an emoji into snake_case
+     *
+     * @param string $name
+     * @return string
+     */
+    protected static function normalizeEmojiName(string $name): string
+    {
+        if (!\ctype_lower($name)) {
+            $name = (string) \preg_replace('/\s+/u', '', \ucwords($name));
+            $name = (string) \mb_strtolower(\preg_replace(
+                '/(.)(?=[A-Z])/u',
+                '$1' . ($delimiter ?? '_'),
+                $name
+            ));
+        }
+
+        return $name;
     }
 }

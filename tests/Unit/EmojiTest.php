@@ -51,3 +51,7 @@ it('does not replace invalid :emoji_names: if there is no valid match', function
 
     expect(Emoji::replace($string))->toBe($string);
 });
+
+it('can convert camel case requests for a method and match with the snake case version', function () {
+    expect(Emoji::manDancing())->not->toBeNull();
+});

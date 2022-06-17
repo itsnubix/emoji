@@ -8,6 +8,11 @@ enum Character: string
 {
     use Enum;
 
+    /**
+     * Available emojis
+     *
+     * @see https://unicode.org/emoji/charts/emoji-list.html
+     */
     case grinning_face = "\u{1F600}"; // 😀
     case grinning_face_with_big_eyes = "\u{1F603}"; // 😃
     case grinning_face_with_smiling_eyes = "\u{1F604}"; // 😄
@@ -1862,6 +1867,12 @@ enum Character: string
     case flag_scotland = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}"; // 🏴󠁧󠁢󠁳󠁣󠁴󠁿
     case flag_wales = "\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}"; // 🏴󠁧󠁢󠁷󠁬󠁳󠁿
 
+    /**
+     * A list of the emojis which support changing skin tone
+     *
+     * @return bool
+     * @see https://unicode.org/emoji/charts/full-emoji-modifiers.html
+     */
     public function supportsSkinTones(): bool
     {
         return match ($this) {
