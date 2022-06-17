@@ -28,8 +28,10 @@ class Factory
     {
         $output = $this->character->value;
 
+        // if the character supports a skin tone...
         if ($this->character->supportsSkinTones()) {
-            $output .= $this->skinTone->value;
+            $output = substr_replace($output, $this->skinTone->value, 8, 0);
+            // $output .= $this->skinTone->value;
         }
 
         return $output;

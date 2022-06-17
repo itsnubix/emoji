@@ -51,3 +51,11 @@ it('can transform itself to a string', function () {
     expect((string) $emoji)->toBe($element->value);
     expect($emoji->toString())->toBe($element->value);
 });
+
+it('checks each character to ensure a skin tone can be applied', function () {
+    $tonedCharacters = array_filter(Character::cases(), fn ($case) => $case->supportsSkinTones());
+
+    foreach ($tonedCharacters as $character) {
+        echo (new Factory($character))->dark()->toString() . "\n";
+    }
+});
